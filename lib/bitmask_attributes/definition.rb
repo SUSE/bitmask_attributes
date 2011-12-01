@@ -40,8 +40,18 @@ module BitmaskAttributes
       end
     
       def override(model)
+        override_dup(model)
         override_getter_on(model)
         override_setter_on(model)
+      end
+
+      def override_dup(model)
+        model.class_eval %(
+          def dup
+            @#{attribute} = nil
+            super
+          end
+        )
       end
     
       def override_getter_on(model)
